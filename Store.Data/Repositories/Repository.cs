@@ -13,15 +13,15 @@ namespace Store.Data.Repositories
     /// Репозиторий для работы с базой данных
     /// </summary>
     /// <typeparam name="TEntity">Сущность в базе данных</typeparam>
-    public class StoreRepository<TEntity> : IStoreRepository<TEntity> where TEntity : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly StoreContext context;
 
         /// <summary>
-        /// Создаёт новый экземпляр класса <seealso cref="StoreRepository{TEntity}"/>
+        /// Создаёт новый экземпляр класса <seealso cref="Repository{TEntity}"/>
         /// </summary>
         /// <param name="context">Контекст базы данных</param>
-        public StoreRepository(StoreContext context)
+        public Repository(StoreContext context)
         {
             this.context = context;
         }

@@ -33,11 +33,6 @@ namespace Store.Data.Entities
         public string Password { get; set; }
 
         /// <summary>
-        /// Jwt-токен
-        /// </summary>
-        public string Token { get; set; }
-
-        /// <summary>
         /// Заказы, сделанные пользователем
         /// </summary>
         public List<Order> Orders { get; set; }

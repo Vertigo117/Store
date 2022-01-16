@@ -2,6 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Store.Data.Contexts;
+using Store.Data.Entities;
+using Store.Data.Interfaces;
+using Store.Data.Repositories;
 
 namespace Store.Data.Extensions
 {
@@ -11,6 +14,8 @@ namespace Store.Data.Extensions
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<StoreContext>(options => options.UseNpgsql(connectionString));
+
+            services.AddScoped<IRepository<User>, Repository<User>>();
         }
     }
 }

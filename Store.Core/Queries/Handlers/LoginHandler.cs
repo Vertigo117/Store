@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using Store.Core.ErrorHandling.Exceptions;
 using Store.Core.Models;
 using Store.Data.Entities;
@@ -21,7 +22,7 @@ namespace Store.Core.Queries.Handlers
     /// </summary>
     public class LoginHandler : IRequestHandler<LoginQuery, AuthenticateResponse>
     {
-        private readonly IStoreRepository<User> userRepository;
+        private readonly IRepository<User> userRepository;
         private readonly AuthSettings appSettings;
 
         /// <summary>
@@ -30,7 +31,7 @@ namespace Store.Core.Queries.Handlers
         /// </summary>
         /// <param name="userRepository">Репозиторий пользователей</param>
         /// <param name="appSettings">настройки аутентификации</param>
-        public LoginHandler(IStoreRepository<User> userRepository, IOptions<AuthSettings> appSettings)
+        public LoginHandler(IRepository<User> userRepository, IOptions<AuthSettings> appSettings)
         {
             this.userRepository = userRepository;
             this.appSettings = appSettings.Value;
@@ -61,7 +62,8 @@ namespace Store.Core.Queries.Handlers
             }
             catch (Exception exception)
             {
-                throw new AuthException("Произошла ошибка авторизации", exception);
+                Log.Error(exception, "При выполнении запроса на аутентификацию произошла ошибка");
+                throw;
             }
         }
 

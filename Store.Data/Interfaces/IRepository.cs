@@ -9,7 +9,7 @@ namespace Store.Data.Interfaces
     /// Интерфейс репозитория базы данных
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public interface IStoreRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity> where TEntity : class
     {
         /// <summary>
         /// Получить все экземпляры сущности, которые удовлетворяют условиям для отбора
