@@ -21,11 +21,11 @@ namespace Store.Core.Queries.Handlers
     /// <summary>
     /// Обработчик запроса на аутентификацию
     /// </summary>
-    public class LoginHandler : IRequestHandler<LoginQuery, UserResponse>
+    public class LoginHandler : IRequestHandler<LoginQuery, AuthenticateResponse>
     {
         private readonly IRepository<User> userRepository;
         private readonly IMapper mapper;
-        private readonly AuthSettings appSettings;
+        private readonly AuthSettings authSettings;
 
         /// <summary>
         /// Создаёт новый экземпляр класса <seealso cref="LoginHandler"/> с репозиторием пользователя,
@@ -33,12 +33,12 @@ namespace Store.Core.Queries.Handlers
         /// </summary>
         /// <param name="userRepository">Репозиторий пользователей</param>
         /// <param name="mapper">Автомаппер</param>
-        /// <param name="appSettings">настройки аутентификации</param>
-        public LoginHandler(IRepository<User> userRepository, IMapper mapper, IOptions<AuthSettings> appSettings)
+        /// <param name="authSettings">настройки аутентификации</param>
+        public LoginHandler(IRepository<User> userRepository, IMapper mapper, IOptions<AuthSettings> authSettings)
         {
             this.userRepository = userRepository;
             this.mapper = mapper;
-            this.appSettings = appSettings.Value;
+            this.authSettings = authSettings.Value;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Store.Core.Queries.Handlers
         /// <param name="cancellationToken">Токен отмены операции</param>
         /// <returns>Задача, которая содержит результат выполнения авторизации</returns>
         /// <exception cref="CustomCoreException">Ошибка аутентификации</exception>
-        public async Task<UserResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
+        public async Task<AuthenticateResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Store.Core.Queries.Handlers
 
                 ClaimsIdentity identity = GetIdentity(user);
                 var token = GenerateJwtToken(identity);
-                var response = mapper.Map<UserResponse>(user);
+                var response = mapper.Map<AuthenticateResponse>(user);
                 response.Token = token;
                 return response;
             }
@@ -75,27 +75,25 @@ namespace Store.Core.Queries.Handlers
 
         private static ClaimsIdentity GetIdentity(User user)
         {
-            return new ClaimsIdentity(new Claim[]
+            var claims = new Claim[]
             {
-                new Claim(ClaimTypes.Name, user.Login),
-                new Claim(ClaimTypes.Role, user.Role)
-            });
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role)
+            };
+            return new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, 
+                ClaimsIdentity.DefaultRoleClaimType);
         }
 
         private string GenerateJwtToken(ClaimsIdentity claimsIdentity)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            byte[] key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha256Signature);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = claimsIdentity,
-                Expires = DateTime.UtcNow.AddDays(appSettings.LifeTimeDays),
-                SigningCredentials = signingCredentials
-            };
-            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var jwt = new JwtSecurityToken(
+                notBefore: DateTime.UtcNow,
+                claims: claimsIdentity.Claims,
+                expires: DateTime.UtcNow.AddDays(authSettings.LifeTimeDays),
+                signingCredentials: new SigningCredentials(
+                    new SymmetricSecurityKey(Encoding.ASCII.GetBytes(authSettings.Secret)), 
+                    SecurityAlgorithms.HmacSha256));
+            return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
     }
 }

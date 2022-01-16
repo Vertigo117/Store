@@ -39,7 +39,7 @@ namespace Store.Api
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
-            app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

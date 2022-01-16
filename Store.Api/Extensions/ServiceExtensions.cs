@@ -35,7 +35,7 @@ namespace Store.Api.Extensions
                                 Id="Bearer"
                             }
                         },
-                        new string[]{}
+                        Array.Empty<string>()
                     }
                 });
 

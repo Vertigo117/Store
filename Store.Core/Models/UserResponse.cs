@@ -1,36 +1,33 @@
-﻿using Store.Data.Entities;
-using System;
-
-namespace Store.Core.Models
+﻿namespace Store.Core.Models
 {
     /// <summary>
-    /// Результат авторизации
+    /// Результат выполнения запроса пользовательских данных
     /// </summary>
     public class UserResponse
     {
         /// <summary>
-        /// Уникальный идентификатор пользователя
-        /// </summary>
-        public Guid Id { get; set; }
-
-        /// <summary>
-        /// Имя
+        /// Имя пользователя
         /// </summary>
         public string FirstName { get; set; }
 
         /// <summary>
-        /// Фамилия
+        /// Фамилия пользователя
         /// </summary>
         public string LastName { get; set; }
 
         /// <summary>
-        /// Логин
+        /// Логин пользователя
         /// </summary>
         public string Login { get; set; }
 
         /// <summary>
-        /// Jwt-токен
+        /// Зашифрованный пароль пользователя
         /// </summary>
-        public string Token { get; set; }
+        public string Password { get; set; }
+
+        /// <summary>
+        /// Роль пользователя в системе
+        /// </summary>
+        public string Role { get; set; }
     }
 }

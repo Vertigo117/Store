@@ -18,28 +18,25 @@ namespace Store.Core.Extensions
 
             services.AddAutoMapper(typeof(MappingProfile));
 
-            var authSettingsSection = configuration.GetSection(nameof(AuthSettings));
-            services.Configure<AuthSettings>(authSettingsSection);
+            var authConfigSection = configuration.GetSection(nameof(AuthSettings));
+            services.Configure<AuthSettings>(authConfigSection);
 
-            var authSettings = authSettingsSection.Get<AuthSettings>();
-            var key = Encoding.ASCII.GetBytes(authSettings.Secret);
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+                    options.RequireHttpsMetadata = false;
+
+                    var authSettings = authConfigSection.Get<AuthSettings>();
+                    byte[] key = Encoding.ASCII.GetBytes(authSettings.Secret);
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuerSigningKey = true
+                    };
+                });
         }
     }
 }

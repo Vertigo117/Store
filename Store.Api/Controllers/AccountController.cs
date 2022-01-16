@@ -32,11 +32,11 @@ namespace Store.Api.Controllers
         /// <returns>Задача, которая содержит результат выполнения аутентификации</returns>
         [HttpPost("/auth")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(AuthenticateResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Error), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> AuthenticateAsync([FromBody] LoginQuery query, CancellationToken token)
         {
-            UserResponse response = await mediator.Send(query, token);
+            AuthenticateResponse response = await mediator.Send(query, token);
             return Ok(response);
         }
 
@@ -56,11 +56,17 @@ namespace Store.Api.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Получить пользователей
+        /// </summary>
+        /// <returns>Задача, которая содержит результат выполнения запроса на получение пользователей</returns>
         [HttpGet("/users")]
-        [Authorize(Roles = UserRoles.Admin]
+        [Authorize(Roles = UserRoles.Admin)]
+        [ProducesResponseType(typeof(IEnumerable<UserResponse>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult> GetUsers()
         {
-            List<UserResponse> users = (await mediator.Send(new GetUsersQuery(), new CancellationToken())).ToList();
+            var users = await mediator.Send(new GetUsersQuery(), new CancellationToken());
             return Ok(users);
         }
     }
