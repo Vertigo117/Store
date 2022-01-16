@@ -10,7 +10,7 @@ namespace Store.Data.Configurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.HasKey(order => order.Id);
-            builder.Property<Guid>("UserId");
+            builder.Property<Guid?>("UserId");
             builder.HasOne(order => order.User).WithMany(user => user.Orders).HasForeignKey("UserId");
             builder.HasMany(order => order.ProductOrders).WithOne(productOrder => productOrder.Order)
                 .HasForeignKey(productOrder => productOrder.OrderId);

@@ -13,6 +13,7 @@ namespace Store.Data.Contexts
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -21,6 +22,7 @@ namespace Store.Data.Contexts
             builder.ApplyConfiguration(new OrderConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new ProductOrderConfiguration());
+            builder.ApplyConfiguration(new RoleConfiguration());
         }
     }
 }

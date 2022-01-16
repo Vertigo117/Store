@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Store.Core.Extensions;
+using Store.Core.Models;
 using Store.Data.Extensions;
 using System;
 using System.Collections.Generic;
@@ -28,10 +30,9 @@ namespace Store.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
-
             services.AddControllers();
-            services.RegisterDatabase(connectionString);
+            services.RegisterDatabase(Configuration);
+            services.RegisterCoreServices(Configuration);
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Store.Api", Version = "v1" });
