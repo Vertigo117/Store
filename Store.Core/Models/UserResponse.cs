@@ -6,7 +6,7 @@ namespace Store.Core.Models
     /// <summary>
     /// Результат авторизации
     /// </summary>
-    public class AuthenticateResponse
+    public class UserResponse
     {
         /// <summary>
         /// Уникальный идентификатор пользователя

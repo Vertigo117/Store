@@ -5,6 +5,8 @@ using Store.Core.Commands;
 using Store.Core.Models;
 using Store.Core.Queries;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,11 +32,11 @@ namespace Store.Api.Controllers
         /// <returns>Задача, которая содержит результат выполнения аутентификации</returns>
         [HttpPost("/auth")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(AuthenticateResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Error), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> AuthenticateAsync([FromBody] LoginQuery query, CancellationToken token)
         {
-            AuthenticateResponse response = await mediator.Send(query, token);
+            UserResponse response = await mediator.Send(query, token);
             return Ok(response);
         }
 
@@ -52,6 +54,14 @@ namespace Store.Api.Controllers
         {
             RegistrationResponse response = await mediator.Send(command, token);
             return Ok(response);
+        }
+
+        [HttpGet("/users")]
+        [Authorize(Roles = UserRoles.Admin]
+        public async Task<ActionResult> GetUsers()
+        {
+            List<UserResponse> users = (await mediator.Send(new GetUsersQuery(), new CancellationToken())).ToList();
+            return Ok(users);
         }
     }
 }

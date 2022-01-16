@@ -6,7 +6,7 @@ namespace Store.Core.Queries
     /// <summary>
     /// Запрос на авторизацию
     /// </summary>
-    public class LoginQuery : IRequest<AuthenticateResponse>
+    public class LoginQuery : IRequest<UserResponse>
     {
         /// <summary>
         /// Логин пользователя

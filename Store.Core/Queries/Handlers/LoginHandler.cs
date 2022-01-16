@@ -21,7 +21,7 @@ namespace Store.Core.Queries.Handlers
     /// <summary>
     /// Обработчик запроса на аутентификацию
     /// </summary>
-    public class LoginHandler : IRequestHandler<LoginQuery, AuthenticateResponse>
+    public class LoginHandler : IRequestHandler<LoginQuery, UserResponse>
     {
         private readonly IRepository<User> userRepository;
         private readonly IMapper mapper;
@@ -48,7 +48,7 @@ namespace Store.Core.Queries.Handlers
         /// <param name="cancellationToken">Токен отмены операции</param>
         /// <returns>Задача, которая содержит результат выполнения авторизации</returns>
         /// <exception cref="CustomCoreException">Ошибка аутентификации</exception>
-        public async Task<AuthenticateResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
+        public async Task<UserResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Store.Core.Queries.Handlers
 
                 ClaimsIdentity identity = GetIdentity(user);
                 var token = GenerateJwtToken(identity);
-                var response = mapper.Map<AuthenticateResponse>(user);
+                var response = mapper.Map<UserResponse>(user);
                 response.Token = token;
                 return response;
             }
