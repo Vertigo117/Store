@@ -78,7 +78,7 @@ namespace Store.Core.Queries.Handlers
             return new ClaimsIdentity(new Claim[]
             {
                 new Claim(ClaimTypes.Name, user.Login),
-                new Claim(ClaimTypes.Role, user.Role.Type)
+                new Claim(ClaimTypes.Role, user.Role)
             });
         }
 

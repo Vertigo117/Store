@@ -54,6 +54,7 @@ namespace Store.Core.Commands.Handlers
                 request.Password = BCryptNet.HashPassword(request.Password);
 
                 var user = mapper.Map<User>(request);
+                user.Role = UserRoles.User;
                 await userRepository.CreateAsync(user);
 
                 var response = mapper.Map<RegistrationResponse>(user);

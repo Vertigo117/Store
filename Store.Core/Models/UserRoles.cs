@@ -9,7 +9,7 @@ namespace Store.Core.Models
     /// <summary>
     /// Роли пользователей в системе
     /// </summary>
-    internal class UserRoles
+    public class UserRoles
     {
         /// <summary>
         /// Администратор, имеет доступ к изменению данных

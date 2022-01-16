@@ -28,13 +28,13 @@ namespace Store.Data.Entities
         public string Password { get; set; }
 
         /// <summary>
+        /// Роль пользователя для авторизации в системе
+        /// </summary>
+        public string Role { get; set; }
+
+        /// <summary>
         /// Заказы, сделанные пользователем
         /// </summary>
         public List<Order> Orders { get; set; }
-
-        /// <summary>
-        /// Роль пользователя для авторизации в системе
-        /// </summary>
-        public Role Role { get; set; }
     }
 }

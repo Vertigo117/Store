@@ -28,11 +28,11 @@ namespace Store.Api.Controllers
         /// <param name="query">Аутентификационный запрос</param>
         /// <param name="token">Токен для отмены операции</param>
         /// <returns>Задача, которая содержит результат выполнения аутентификации</returns>
-        [HttpPost]
+        [HttpPost("/auth")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(AuthenticateResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Error), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody] LoginQuery query, CancellationToken token)
+        public async Task<IActionResult> AuthenticateAsync([FromBody] LoginQuery query, CancellationToken token)
         {
             AuthenticateResponse response = await mediator.Send(query, token);
             return Ok(response);
@@ -44,11 +44,11 @@ namespace Store.Api.Controllers
         /// <param name="command">Запрос на регистрацию</param>
         /// <param name="token">Токен для отмены операции</param>
         /// <returns>Задача, которая содержит результат регистрации</returns>
-        [HttpPost]
+        [HttpPost("/register")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(RegistrationResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Error), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult> Post([FromBody] RegisterCommand command, CancellationToken token)
+        public async Task<ActionResult> RegisterAsync([FromBody] RegisterCommand command, CancellationToken token)
         {
             RegistrationResponse response = await mediator.Send(command, token);
             return Ok(response);

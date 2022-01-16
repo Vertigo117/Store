@@ -2,11 +2,6 @@
 using Store.Core.Commands;
 using Store.Core.Models;
 using Store.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Store.Core.Configuration
 {
@@ -20,10 +15,9 @@ namespace Store.Core.Configuration
         /// </summary>
         public MappingProfile()
         {
-            CreateMap<User, RegistrationResponse>()
-                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.Type))
-                .ReverseMap();
-            CreateMap<User, AuthenticateResponse>();
+            CreateMap<User, RegisterCommand>().ReverseMap();
+            CreateMap<User, RegistrationResponse>().ReverseMap();
+            CreateMap<User, AuthenticateResponse>().ReverseMap();
         }
     }
 }
