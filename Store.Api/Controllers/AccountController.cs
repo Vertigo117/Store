@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Store.Core.Commands;
 using Store.Core.Models;
 using Store.Core.Queries;
 using System;
@@ -26,7 +27,7 @@ namespace Store.Api.Controllers
         /// </summary>
         /// <param name="query">Аутентификационный запрос</param>
         /// <param name="token">Токен для отмены операции</param>
-        /// <returns>Задачу, которая содержит результат выполнения аутентификации</returns>
+        /// <returns>Задача, которая содержит результат выполнения аутентификации</returns>
         [HttpPost]
         [AllowAnonymous]
         [ProducesResponseType(typeof(AuthenticateResponse), (int)HttpStatusCode.OK)]
@@ -34,6 +35,22 @@ namespace Store.Api.Controllers
         public async Task<IActionResult> Post([FromBody] LoginQuery query, CancellationToken token)
         {
             AuthenticateResponse response = await mediator.Send(query, token);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Регистрация пользователя
+        /// </summary>
+        /// <param name="command">Запрос на регистрацию</param>
+        /// <param name="token">Токен для отмены операции</param>
+        /// <returns>Задача, которая содержит результат регистрации</returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(RegistrationResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> Post([FromBody] RegisterCommand command, CancellationToken token)
+        {
+            RegistrationResponse response = await mediator.Send(command, token);
             return Ok(response);
         }
     }

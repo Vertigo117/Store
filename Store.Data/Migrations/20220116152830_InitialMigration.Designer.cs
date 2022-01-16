@@ -10,8 +10,8 @@ using Store.Data.Contexts;
 namespace Store.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20220115161915_Initial")]
-    partial class Initial
+    [Migration("20220116152830_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,7 +47,7 @@ namespace Store.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -63,7 +63,7 @@ namespace Store.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -101,14 +101,25 @@ namespace Store.Data.Migrations
                     b.ToTable("ProductOrder");
                 });
 
-            modelBuilder.Entity("Store.Data.Entities.User", b =>
+            modelBuilder.Entity("Store.Data.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Type")
                         .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("Store.Data.Entities.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
@@ -122,7 +133,12 @@ namespace Store.Data.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("RoleId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -131,9 +147,7 @@ namespace Store.Data.Migrations
                 {
                     b.HasOne("Store.Data.Entities.User", "User")
                         .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -142,9 +156,7 @@ namespace Store.Data.Migrations
                 {
                     b.HasOne("Store.Data.Entities.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
                 });
@@ -168,6 +180,15 @@ namespace Store.Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Store.Data.Entities.User", b =>
+                {
+                    b.HasOne("Store.Data.Entities.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("Store.Data.Entities.Category", b =>
                 {
                     b.Navigation("Products");
@@ -181,6 +202,11 @@ namespace Store.Data.Migrations
             modelBuilder.Entity("Store.Data.Entities.Product", b =>
                 {
                     b.Navigation("ProductOrders");
+                });
+
+            modelBuilder.Entity("Store.Data.Entities.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Store.Data.Entities.User", b =>

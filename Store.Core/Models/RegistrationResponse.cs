@@ -1,12 +1,11 @@
-﻿using Store.Data.Entities;
-using System;
+﻿using System;
 
 namespace Store.Core.Models
 {
     /// <summary>
-    /// Результат авторизации
+    /// Результат выполнения запроса на регистрацию нового пользователя
     /// </summary>
-    public class AuthenticateResponse
+    public class RegistrationResponse
     {
         /// <summary>
         /// Уникальный идентификатор пользователя
@@ -16,7 +15,7 @@ namespace Store.Core.Models
         /// <summary>
         /// Имя
         /// </summary>
-        public string FirstName { get; set; }
+        public string Firstname { get; set; }
 
         /// <summary>
         /// Фамилия
@@ -29,8 +28,13 @@ namespace Store.Core.Models
         public string Login { get; set; }
 
         /// <summary>
-        /// Jwt-токен
+        /// Пароль
         /// </summary>
-        public string Token { get; set; }
+        public string Password { get; set; }
+
+        /// <summary>
+        /// Роль пользователя в системе
+        /// </summary>
+        public string Role { get; set; }
     }
 }

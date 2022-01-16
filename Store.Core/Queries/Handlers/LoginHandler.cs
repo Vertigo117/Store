@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -23,17 +24,20 @@ namespace Store.Core.Queries.Handlers
     public class LoginHandler : IRequestHandler<LoginQuery, AuthenticateResponse>
     {
         private readonly IRepository<User> userRepository;
+        private readonly IMapper mapper;
         private readonly AuthSettings appSettings;
 
         /// <summary>
-        /// Создаёт новый экземпляр класса <seealso cref="LoginHandler"/> с репозиторием пользователя
-        /// и настройками аутентификации
+        /// Создаёт новый экземпляр класса <seealso cref="LoginHandler"/> с репозиторием пользователя,
+        /// автомаппером и настройками аутентификации
         /// </summary>
         /// <param name="userRepository">Репозиторий пользователей</param>
+        /// <param name="mapper">Автомаппер</param>
         /// <param name="appSettings">настройки аутентификации</param>
-        public LoginHandler(IRepository<User> userRepository, IOptions<AuthSettings> appSettings)
+        public LoginHandler(IRepository<User> userRepository, IMapper mapper, IOptions<AuthSettings> appSettings)
         {
             this.userRepository = userRepository;
+            this.mapper = mapper;
             this.appSettings = appSettings.Value;
         }
 
@@ -43,7 +47,7 @@ namespace Store.Core.Queries.Handlers
         /// <param name="request">Запрос на аутентификацию</param>
         /// <param name="cancellationToken">Токен отмены операции</param>
         /// <returns>Задача, которая содержит результат выполнения авторизации</returns>
-        /// <exception cref="AuthException">Ошибка аутентификации</exception>
+        /// <exception cref="CustomCoreException">Ошибка аутентификации</exception>
         public async Task<AuthenticateResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
             try
@@ -53,12 +57,14 @@ namespace Store.Core.Queries.Handlers
 
                 if (user == null)
                 {
-                    throw new AuthException("Неправильный логин или пароль");
+                    throw new CustomCoreException("Неправильный логин или пароль");
                 }
 
                 ClaimsIdentity identity = GetIdentity(user);
                 var token = GenerateJwtToken(identity);
-                return new AuthenticateResponse(user, token);
+                var response = mapper.Map<AuthenticateResponse>(user);
+                response.Token = token;
+                return response;
             }
             catch (Exception exception)
             {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Store.Data.Configurations;
 using Store.Data.Entities;
+using System.Reflection;
 
 namespace Store.Data.Contexts
 {
@@ -17,12 +18,7 @@ namespace Store.Data.Contexts
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new CategoryConfiguration());
-            builder.ApplyConfiguration(new ProductConfiguration());
-            builder.ApplyConfiguration(new OrderConfiguration());
-            builder.ApplyConfiguration(new UserConfiguration());
-            builder.ApplyConfiguration(new ProductOrderConfiguration());
-            builder.ApplyConfiguration(new RoleConfiguration());
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

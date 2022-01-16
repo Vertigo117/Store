@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Store.Core.Configuration;
 using Store.Core.Models;
 using System.Reflection;
 using System.Text;
@@ -14,6 +15,8 @@ namespace Store.Core.Extensions
         public static void RegisterCoreServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
+
+            services.AddAutoMapper(typeof(MappingProfile));
 
             var authSettingsSection = configuration.GetSection(nameof(AuthSettings));
             services.Configure<AuthSettings>(authSettingsSection);

@@ -23,11 +23,6 @@ namespace Store.Data.Entities
         public string Login { get; set; }
 
         /// <summary>
-        /// Адрес электронной почты
-        /// </summary>
-        public string Email { get; set; }
-
-        /// <summary>
         /// Пароль
         /// </summary>
         public string Password { get; set; }
