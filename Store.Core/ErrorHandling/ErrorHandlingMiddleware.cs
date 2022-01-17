@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Serilog;
 using Store.Core.ErrorHandling.Exceptions;
 using Store.Core.Models;
 using System;
@@ -37,6 +38,7 @@ namespace Store.Core.ErrorHandling
             catch (Exception exception)
             {
                 await HandleExceptionAsync(exception, httpContext);
+                Log.Error(exception, $"При выполнении запроса {exception.Source} произошла ошибка: ");
             }
         }
 

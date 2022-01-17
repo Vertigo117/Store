@@ -70,5 +70,24 @@ namespace Store.Api.Controllers
             var users = await mediator.Send(new GetUsersQuery(), new CancellationToken());
             return Ok(users);
         }
+
+        /// <summary>
+        /// Обновить данные пользователя
+        /// </summary>
+        /// <param name="command">Запрос на обновление</param>
+        /// <param name="token">Токен для отмены операции</param>
+        /// <returns>Задача, которая содержит результат выполнения запроса на обновление пользователя</returns>
+        /// <response code="403">У текущего пользователя нет прав для доступа к данной операции</response>
+        [HttpPut("/user")]
+        [Authorize(Roles = UserRoles.Admin)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> UpdateUser(UpdateUserCommand command, CancellationToken token)
+        {
+            await mediator.Send(command, token);
+            return Ok();
+        }
     }
 }

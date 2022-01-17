@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Serilog;
 using Store.Core.ErrorHandling.Exceptions;
 using Store.Core.Models;
 using Store.Data.Entities;
@@ -34,10 +33,11 @@ namespace Store.Core.Features.Queries.Handlers
         /// <param name="repository">Репозиторий бд</param>
         /// <param name="mapper">Автомаппер</param>
         /// <param name="authSettings">настройки аутентификации</param>
+        /// <exception cref="ArgumentNullException"/>
         public LoginHandler(IRepositoryWrapper repository, IMapper mapper, IOptions<AuthSettings> authSettings)
         {
-            this.repository = repository;
-            this.mapper = mapper;
+            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.authSettings = authSettings.Value;
         }
 
@@ -50,27 +50,19 @@ namespace Store.Core.Features.Queries.Handlers
         /// <exception cref="CustomCoreException">Ошибка аутентификации</exception>
         public async Task<AuthenticateResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var user = (await repository.Users.GetAsync(user => user.Login == request.Login))
+            var user = (await repository.Users.GetAsync(user => user.Login == request.Login))
                 .FirstOrDefault(user => BCryptNet.Verify(request.Password, user.Password));
 
-                if (user == null)
-                {
-                    throw new CustomCoreException("Неправильный логин или пароль");
-                }
-
-                ClaimsIdentity identity = GetIdentity(user);
-                var token = GenerateJwtToken(identity);
-                var response = mapper.Map<AuthenticateResponse>(user);
-                response.Token = token;
-                return response;
-            }
-            catch (Exception exception)
+            if (user == null)
             {
-                Log.Error(exception, "При выполнении запроса на аутентификацию произошла ошибка");
-                throw;
+                throw new CustomCoreException("Неправильный логин или пароль");
             }
+
+            ClaimsIdentity identity = GetIdentity(user);
+            var token = GenerateJwtToken(identity);
+            var response = mapper.Map<AuthenticateResponse>(user);
+            response.Token = token;
+            return response;
         }
 
         private static ClaimsIdentity GetIdentity(User user)
@@ -80,7 +72,7 @@ namespace Store.Core.Features.Queries.Handlers
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role)
             };
-            return new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, 
+            return new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
                 ClaimsIdentity.DefaultRoleClaimType);
         }
 
@@ -91,7 +83,7 @@ namespace Store.Core.Features.Queries.Handlers
                 claims: claimsIdentity.Claims,
                 expires: DateTime.UtcNow.AddDays(authSettings.LifeTimeDays),
                 signingCredentials: new SigningCredentials(
-                    new SymmetricSecurityKey(Encoding.ASCII.GetBytes(authSettings.Secret)), 
+                    new SymmetricSecurityKey(Encoding.ASCII.GetBytes(authSettings.Secret)),
                     SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }

@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using Serilog;
 using Store.Core.Models;
-using Store.Data.Entities;
 using Store.Data.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -25,10 +23,11 @@ namespace Store.Core.Features.Queries.Handlers
         /// </summary>
         /// <param name="repository">Репозиторий бд</param>
         /// <param name="mapper">Автомаппер</param>
+        /// <exception cref="ArgumentNullException"/>
         public GetUsersHandler(IRepositoryWrapper repository, IMapper mapper)
         {
-            this.repository = repository;
-            this.mapper = mapper;
+            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         /// <summary>
@@ -39,17 +38,9 @@ namespace Store.Core.Features.Queries.Handlers
         /// <returns>Задача, которая содержит результат выполнения операции</returns>
         public async Task<IEnumerable<UserResponse>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var users = await repository.Users.GetAsync();
-                var response = mapper.Map<IEnumerable<UserResponse>>(users);
-                return response;
-            }
-            catch (Exception exception)
-            {
-                Log.Error(exception, "Произошла ошибка запроса на получение пользователей");
-                throw;
-            }
+            var users = await repository.Users.GetAsync();
+            var response = mapper.Map<IEnumerable<UserResponse>>(users);
+            return response;
         }
     }
 }

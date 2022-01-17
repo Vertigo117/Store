@@ -19,6 +19,7 @@ namespace Store.Core.Configuration
             CreateMap<User, RegistrationResponse>().ReverseMap();
             CreateMap<User, AuthenticateResponse>().ReverseMap();
             CreateMap<User, UserResponse>().ReverseMap();
+            CreateMap<User, UpdateUserCommand>().ReverseMap();
         }
     }
 }
