@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Store.Data.Entities;
-using Store.Data.Extensions;
 using System.Reflection;
 
 namespace Store.Data.Contexts
