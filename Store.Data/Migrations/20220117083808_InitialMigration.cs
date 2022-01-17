@@ -78,7 +78,7 @@ namespace Store.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductOrder",
+                name: "ProductOrders",
                 columns: table => new
                 {
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -87,15 +87,15 @@ namespace Store.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductOrder", x => new { x.OrderId, x.ProductId });
+                    table.PrimaryKey("PK_ProductOrders", x => new { x.OrderId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_ProductOrder_Orders_OrderId",
+                        name: "FK_ProductOrders_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductOrder_Products_OrderId",
+                        name: "FK_ProductOrders_Products_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -116,7 +116,7 @@ namespace Store.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ProductOrder");
+                name: "ProductOrders");
 
             migrationBuilder.DropTable(
                 name: "Orders");

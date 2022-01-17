@@ -27,17 +27,15 @@ namespace Store.Data.Repositories
         }
 
         ///<inheritdoc/>
-        public async Task CreateAsync(TEntity entity)
+        public void Create(TEntity entity)
         {
-            await context.Set<TEntity>().AddAsync(entity);
-            await context.SaveChangesAsync();
+            context.Set<TEntity>().Add(entity);
         }
 
         ///<inheritdoc/>
-        public async Task DeleteAsync(TEntity entity)
+        public void Delete(TEntity entity)
         {
             context.Remove(entity);
-            await context.SaveChangesAsync();
         }
 
         ///<inheritdoc/>
@@ -58,10 +56,9 @@ namespace Store.Data.Repositories
         }
 
         ///<inheritdoc/>
-        public async Task UpdateAsync(TEntity entity)
+        public void Update(TEntity entity)
         {
             context.Set<TEntity>().Update(entity);
-            await context.SaveChangesAsync();
         }
     }
 }

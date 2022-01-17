@@ -18,14 +18,14 @@ namespace Store.Data.Entities
         public Guid OrderId { get; set; }
 
         /// <summary>
-        /// Товар
-        /// </summary>
-        public Product Product { get; set; }
-
-        /// <summary>
         /// Количество товара в заказе
         /// </summary>
         public int Quantity { get; set; }
+
+        /// <summary>
+        /// Товар
+        /// </summary>
+        public Product Product { get; set; }
 
         /// <summary>
         /// Заказ

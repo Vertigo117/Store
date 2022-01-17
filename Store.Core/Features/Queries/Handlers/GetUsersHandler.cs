@@ -16,18 +16,18 @@ namespace Store.Core.Features.Queries.Handlers
     /// </summary>
     public class GetUsersHandler : IRequestHandler<GetUsersQuery, IEnumerable<UserResponse>>
     {
-        private readonly IRepository<User> userRepository;
+        private readonly IRepositoryWrapper repository;
         private readonly IMapper mapper;
 
         /// <summary>
-        /// Создаёт новый экземпляр класса <seealso cref="GetUsersHandler"/> с репозиторием пользователей
+        /// Создаёт новый экземпляр класса <seealso cref="GetUsersHandler"/> с репозиторием бд
         /// и автомаппером
         /// </summary>
-        /// <param name="userRepository">Репозиторий пользователей</param>
+        /// <param name="repository">Репозиторий бд</param>
         /// <param name="mapper">Автомаппер</param>
-        public GetUsersHandler(IRepository<User> userRepository, IMapper mapper)
+        public GetUsersHandler(IRepositoryWrapper repository, IMapper mapper)
         {
-            this.userRepository = userRepository;
+            this.repository = repository;
             this.mapper = mapper;
         }
 
@@ -41,7 +41,7 @@ namespace Store.Core.Features.Queries.Handlers
         {
             try
             {
-                var users = await userRepository.GetAsync();
+                var users = await repository.Users.GetAsync();
                 var response = mapper.Map<IEnumerable<UserResponse>>(users);
                 return response;
             }

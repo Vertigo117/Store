@@ -23,20 +23,20 @@ namespace Store.Core.Features.Queries.Handlers
     /// </summary>
     public class LoginHandler : IRequestHandler<LoginQuery, AuthenticateResponse>
     {
-        private readonly IRepository<User> userRepository;
+        private readonly IRepositoryWrapper repository;
         private readonly IMapper mapper;
         private readonly AuthSettings authSettings;
 
         /// <summary>
-        /// Создаёт новый экземпляр класса <seealso cref="LoginHandler"/> с репозиторием пользователя,
+        /// Создаёт новый экземпляр класса <seealso cref="LoginHandler"/> с репозиторием бд,
         /// автомаппером и настройками аутентификации
         /// </summary>
-        /// <param name="userRepository">Репозиторий пользователей</param>
+        /// <param name="repository">Репозиторий бд</param>
         /// <param name="mapper">Автомаппер</param>
         /// <param name="authSettings">настройки аутентификации</param>
-        public LoginHandler(IRepository<User> userRepository, IMapper mapper, IOptions<AuthSettings> authSettings)
+        public LoginHandler(IRepositoryWrapper repository, IMapper mapper, IOptions<AuthSettings> authSettings)
         {
-            this.userRepository = userRepository;
+            this.repository = repository;
             this.mapper = mapper;
             this.authSettings = authSettings.Value;
         }
@@ -52,7 +52,7 @@ namespace Store.Core.Features.Queries.Handlers
         {
             try
             {
-                var user = (await userRepository.GetAsync(user => user.Login == request.Login))
+                var user = (await repository.Users.GetAsync(user => user.Login == request.Login))
                 .FirstOrDefault(user => BCryptNet.Verify(request.Password, user.Password));
 
                 if (user == null)

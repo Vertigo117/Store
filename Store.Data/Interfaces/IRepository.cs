@@ -8,7 +8,7 @@ namespace Store.Data.Interfaces
     /// <summary>
     /// Интерфейс репозитория базы данных
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TEntity">Тип сущности в базе данных</typeparam>
     public interface IRepository<TEntity> where TEntity : class
     {
         /// <summary>
@@ -35,21 +35,18 @@ namespace Store.Data.Interfaces
         /// Создать новый экземпляр сущности
         /// </summary>
         /// <param name="entity">Экземпляр сущности</param>
-        /// <returns>Результат выполнения асинхронной операции</returns>
-        Task CreateAsync(TEntity entity);
+        void Create(TEntity entity);
 
         /// <summary>
         /// Обновить существующий экземпляр сущности
         /// </summary>
         /// <param name="entity">Данные для обновления</param>
-        /// <returns>Задача, которая содержит результат выполнения асинхронной операции</returns>
-        Task UpdateAsync(TEntity entity);
+        void Update(TEntity entity);
 
         /// <summary>
         /// Удалить экземпляр сущности из базы данных
         /// </summary>
         /// <param name="entity">Экземпляр сущности</param>
-        /// <returns>Задача, которая содержит результат выполнения асинхронной операции</returns>
-        Task DeleteAsync(TEntity entity);
+        void Delete(TEntity entity);
     }
 }

@@ -10,7 +10,7 @@ using Store.Data.Contexts;
 namespace Store.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20220116161141_InitialMigration")]
+    [Migration("20220117083808_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -98,7 +98,7 @@ namespace Store.Data.Migrations
 
                     b.HasKey("OrderId", "ProductId");
 
-                    b.ToTable("ProductOrder");
+                    b.ToTable("ProductOrders");
                 });
 
             modelBuilder.Entity("Store.Data.Entities.User", b =>

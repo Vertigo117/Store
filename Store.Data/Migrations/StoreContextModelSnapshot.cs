@@ -96,7 +96,7 @@ namespace Store.Data.Migrations
 
                     b.HasKey("OrderId", "ProductId");
 
-                    b.ToTable("ProductOrder");
+                    b.ToTable("ProductOrders");
                 });
 
             modelBuilder.Entity("Store.Data.Entities.User", b =>

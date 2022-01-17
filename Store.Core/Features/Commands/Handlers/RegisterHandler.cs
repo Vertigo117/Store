@@ -18,7 +18,7 @@ namespace Store.Core.Features.Commands.Handlers
     /// </summary>
     internal class RegisterHandler : IRequestHandler<RegisterCommand, RegistrationResponse>
     {
-        private readonly IRepository<User> userRepository;
+        private readonly IRepositoryWrapper repository;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -27,9 +27,9 @@ namespace Store.Core.Features.Commands.Handlers
         /// </summary>
         /// <param name="userRepository">Репозиторий пользователей</param>
         /// <param name="mapper">Автомаппер</param>
-        public RegisterHandler(IRepository<User> userRepository, IMapper mapper)
+        public RegisterHandler(IRepositoryWrapper repository, IMapper mapper)
         {
-            this.userRepository = userRepository;
+            this.repository = repository;
             this.mapper = mapper;
         }
 
@@ -44,9 +44,9 @@ namespace Store.Core.Features.Commands.Handlers
         {
             try
             {
-                bool isLoginExists = (await userRepository.GetAsync()).Any(user => user.Login == command.Login);
+                bool loginExists = (await repository.Users.GetAsync()).Any(user => user.Login == command.Login);
 
-                if (isLoginExists)
+                if (loginExists)
                 {
                     throw new CustomCoreException($"Пользователь с логином '{command.Login}' уже существует");
                 }
@@ -55,7 +55,8 @@ namespace Store.Core.Features.Commands.Handlers
 
                 var user = mapper.Map<User>(command);
                 user.Role = UserRoles.User;
-                await userRepository.CreateAsync(user);
+                repository.Users.Create(user);
+                await repository.SaveAsync();
 
                 var response = mapper.Map<RegistrationResponse>(user);
                 return response;
