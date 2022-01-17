@@ -58,34 +58,29 @@ namespace Store.Core.Features.Queries.Handlers
                 throw new CustomCoreException("Неправильный логин или пароль");
             }
 
-            ClaimsIdentity identity = GetIdentity(user);
-            var token = GenerateJwtToken(identity);
             var response = mapper.Map<AuthenticateResponse>(user);
-            response.Token = token;
+            response.Token = GenerateToken(user);
             return response;
         }
 
-        private static ClaimsIdentity GetIdentity(User user)
+        private string GenerateToken(User user)
         {
-            var claims = new Claim[]
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(authSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role)
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Login),
+                    new Claim(ClaimTypes.Role, user.Role)
+                }),
+                Expires = DateTime.UtcNow.AddDays(authSettings.LifeTimeDays),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
             };
-            return new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-        }
-
-        private string GenerateJwtToken(ClaimsIdentity claimsIdentity)
-        {
-            var jwt = new JwtSecurityToken(
-                notBefore: DateTime.UtcNow,
-                claims: claimsIdentity.Claims,
-                expires: DateTime.UtcNow.AddDays(authSettings.LifeTimeDays),
-                signingCredentials: new SigningCredentials(
-                    new SymmetricSecurityKey(Encoding.ASCII.GetBytes(authSettings.Secret)),
-                    SecurityAlgorithms.HmacSha256));
-            return new JwtSecurityTokenHandler().WriteToken(jwt);
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }
