@@ -14,16 +14,6 @@ namespace Store.Core.Models
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Имя
-        /// </summary>
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Фамилия
-        /// </summary>
-        public string LastName { get; set; }
-
-        /// <summary>
         /// Логин
         /// </summary>
         public string Login { get; set; }
