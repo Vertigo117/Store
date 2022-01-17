@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using Store.Core.Commands;
+using Store.Core.Features.Commands;
 using Store.Core.Models;
 using Store.Data.Entities;
-using System.Collections.Generic;
 
 namespace Store.Core.Configuration
 {
@@ -19,6 +18,7 @@ namespace Store.Core.Configuration
             CreateMap<User, RegisterCommand>().ReverseMap();
             CreateMap<User, RegistrationResponse>().ReverseMap();
             CreateMap<User, AuthenticateResponse>().ReverseMap();
+            CreateMap<User, UserResponse>().ReverseMap();
         }
     }
 }

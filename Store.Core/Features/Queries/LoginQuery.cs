@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Store.Core.Models;
 
-namespace Store.Core.Queries
+namespace Store.Core.Features.Queries
 {
     /// <summary>
     /// Запрос на авторизацию

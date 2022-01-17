@@ -2,7 +2,7 @@
 using Store.Core.Models;
 using System.Collections.Generic;
 
-namespace Store.Core.Queries
+namespace Store.Core.Features.Queries
 {
     /// <summary>
     /// Запрос на получение пользователей

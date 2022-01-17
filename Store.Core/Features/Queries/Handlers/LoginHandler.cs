@@ -16,7 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BCryptNet = BCrypt.Net.BCrypt;
 
-namespace Store.Core.Queries.Handlers
+namespace Store.Core.Features.Queries.Handlers
 {
     /// <summary>
     /// Обработчик запроса на аутентификацию

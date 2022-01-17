@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Store.Core.Models;
 
-namespace Store.Core.Commands
+namespace Store.Core.Features.Commands
 {
     /// <summary>
     /// Команда для регистрации нового пользователя

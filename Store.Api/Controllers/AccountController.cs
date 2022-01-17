@@ -1,12 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Store.Core.Commands;
+using Store.Core.Features.Commands;
+using Store.Core.Features.Queries;
 using Store.Core.Models;
-using Store.Core.Queries;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -63,7 +62,9 @@ namespace Store.Api.Controllers
         [HttpGet("/users")]
         [Authorize(Roles = UserRoles.Admin)]
         [ProducesResponseType(typeof(IEnumerable<UserResponse>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(Error), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<ActionResult> GetUsers()
         {
             var users = await mediator.Send(new GetUsersQuery(), new CancellationToken());

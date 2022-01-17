@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BCryptNet = BCrypt.Net.BCrypt;
 
-namespace Store.Core.Commands.Handlers
+namespace Store.Core.Features.Commands.Handlers
 {
     /// <summary>
     /// Обработчик запроса на регистрацию

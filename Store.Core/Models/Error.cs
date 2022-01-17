@@ -12,8 +12,18 @@ namespace Store.Core.Models
     public class Error
     {
         /// <summary>
-        /// Сообщение об ошибке
+        /// Сообщение для пользователя
         /// </summary>
-        public string Message { get; set; }
+        public string UserMessage { get; set; }
+
+        /// <summary>
+        /// Подробное сообщение об ошибке
+        /// </summary>
+        public string ExceptionMessage { get; set; }
+
+        /// <summary>
+        /// Стек вызовов
+        /// </summary>
+        public string StackTrace { get; set; }
     }
 }

@@ -6,11 +6,10 @@ using Store.Data.Entities;
 using Store.Data.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Store.Core.Queries.Handlers
+namespace Store.Core.Features.Queries.Handlers
 {
     /// <summary>
     /// Обработчик запроса на получение пользователей

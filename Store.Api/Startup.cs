@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Store.Api.Extensions;
+using Store.Core.ErrorHandling;
 using Store.Core.Extensions;
 using Store.Data.Extensions;
 
@@ -42,6 +43,8 @@ namespace Store.Api
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
