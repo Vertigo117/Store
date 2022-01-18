@@ -50,7 +50,7 @@ namespace Store.Core.Features.Queries.Handlers
         /// <exception cref="CustomCoreException">Ошибка аутентификации</exception>
         public async Task<AuthenticateResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
-            var user = (await repository.Users.GetAsync(user => user.Login == request.Login))
+            User user = (await repository.Users.GetAsync(user => user.Login == request.Login))
                 .FirstOrDefault(user => BCryptNet.Verify(request.Password, user.Password));
 
             if (user == null)
@@ -66,7 +66,7 @@ namespace Store.Core.Features.Queries.Handlers
         private string GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(authSettings.Secret);
+            byte[] key = Encoding.ASCII.GetBytes(authSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -79,7 +79,7 @@ namespace Store.Core.Features.Queries.Handlers
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature)
             };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
     }
