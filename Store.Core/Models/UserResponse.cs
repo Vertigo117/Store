@@ -1,10 +1,17 @@
-﻿namespace Store.Core.Models
+﻿using System;
+
+namespace Store.Core.Models
 {
     /// <summary>
     /// Результат выполнения запроса пользовательских данных
     /// </summary>
     public class UserResponse
     {
+        /// <summary>
+        /// Уникальный идентификатор пользователя
+        /// </summary>
+        public Guid Id { get; set; }
+
         /// <summary>
         /// Имя пользователя
         /// </summary>

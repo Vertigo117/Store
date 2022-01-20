@@ -3,17 +3,17 @@ using Store.Core.Features.Commands;
 using Store.Core.Models;
 using Store.Data.Entities;
 
-namespace Store.Core.Configuration
+namespace Store.Core.Mapping
 {
     /// <summary>
     /// Настройки для маппинга AutoMapper
     /// </summary>
-    public class MappingProfile : Profile
+    public class AccountProfile : Profile
     {
         /// <summary>
-        /// Создаёт новый экземпляр класса <seealso cref="MappingProfile"/>
+        /// Создаёт новый экземпляр класса <seealso cref="AccountProfile"/>
         /// </summary>
-        public MappingProfile()
+        public AccountProfile()
         {
             CreateMap<User, RegisterCommand>().ReverseMap();
             CreateMap<User, RegistrationResponse>().ReverseMap();
