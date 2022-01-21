@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using Store.Core.Models;
+using Store.Core.Contracts;
 using Store.Data.Interfaces;
 using System;
 using System.Collections.Generic;

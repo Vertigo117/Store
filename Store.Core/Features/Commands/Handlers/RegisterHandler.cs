@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Serilog;
+using Store.Core.Contracts;
 using Store.Core.ErrorHandling.Exceptions;
 using Store.Core.Models;
 using Store.Data.Entities;

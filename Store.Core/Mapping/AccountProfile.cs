@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Store.Core.Contracts;
 using Store.Core.Features.Commands;
-using Store.Core.Models;
 using Store.Data.Entities;
 
 namespace Store.Core.Mapping

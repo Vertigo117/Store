@@ -1,7 +1,6 @@
-﻿using Store.Data.Entities;
-using System;
+﻿using System;
 
-namespace Store.Core.Models
+namespace Store.Core.Contracts
 {
     /// <summary>
     /// Результат авторизации

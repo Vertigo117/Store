@@ -17,7 +17,7 @@ namespace Store.Data.Extensions
         /// </summary>
         /// <param name="services">Коллекция сервисов</param>
         /// <param name="configuration">Настройки конфигурации</param>
-        public static void RegisterDatabase(this IServiceCollection services, IConfiguration configuration)
+        public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<StoreContext>(options => options.UseNpgsql(connectionString));

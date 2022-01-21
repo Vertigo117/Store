@@ -12,7 +12,7 @@ namespace Store.Core.Extensions
 {
     public static class ServiceExtensions
     {
-        public static void RegisterCoreServices(this IServiceCollection services, IConfiguration configuration)
+        public static void AddCoreServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
 

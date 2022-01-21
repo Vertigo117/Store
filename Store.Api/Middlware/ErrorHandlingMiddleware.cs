@@ -1,16 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Serilog;
+using Store.Core.ErrorHandling;
 using Store.Core.ErrorHandling.Exceptions;
-using Store.Core.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Store.Core.ErrorHandling
+namespace Store.Api.Middlware
 {
     /// <summary>
     /// Компонент middleware для кастомной обработки ошибок

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Store.Core.Models;
+using Store.Core.Contracts;
 using System.Collections.Generic;
 
 namespace Store.Core.Features.Queries

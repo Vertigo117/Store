@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Store.Core.Models
+namespace Store.Core.Contracts
 {
     /// <summary>
     /// Результат выполнения запроса на регистрацию нового пользователя

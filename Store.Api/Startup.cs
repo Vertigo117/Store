@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Store.Api.Extensions;
-using Store.Core.ErrorHandling;
+using Store.Api.Middlware;
 using Store.Core.Extensions;
 using Store.Data.Extensions;
 
@@ -20,8 +20,8 @@ namespace Store.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.RegisterDatabase(Configuration);
-            services.RegisterCoreServices(Configuration);
+            services.AddDatabase(Configuration);
+            services.AddCoreServices(Configuration);
             services.AddControllers();
             services.ConfigureSwagger();
         }
@@ -44,7 +44,7 @@ namespace Store.Api
 
             app.UseAuthorization();
 
-            app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseCustomErrorHandlingMiddlware();
 
             app.UseEndpoints(endpoints =>
             {

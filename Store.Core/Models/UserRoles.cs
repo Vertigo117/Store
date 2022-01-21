@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Store.Core.Models
+﻿namespace Store.Core.Models
 {
     /// <summary>
     /// Роли пользователей в системе
