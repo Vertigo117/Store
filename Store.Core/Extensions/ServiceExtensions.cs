@@ -11,7 +11,7 @@ namespace Store.Core.Extensions
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            services.AddAutoMapper(typeof(AccountProfile));
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
     }
 }
