@@ -53,7 +53,9 @@ namespace Store.Api.Middlware
             }
         }
 
-        private static async Task HandleCustomException(CustomCoreException customCoreException, HttpContext httpContext)
+        private static async Task HandleCustomException(
+            CustomCoreException customCoreException, 
+            HttpContext httpContext)
         {
             var error = new ErrorResponse
             {
