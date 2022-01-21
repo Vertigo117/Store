@@ -16,7 +16,7 @@ namespace Store.Data.Interfaces
         /// </summary>
         /// <param name="predicate">Условия для отбора</param>
         /// <returns>Задача, которая содержит экземпляр сущности, удовлетворяющий заданным условиям</returns>
-        Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// Возвращает экземпляр сущности с заданным уникальным идентификатором
@@ -29,7 +29,7 @@ namespace Store.Data.Interfaces
         /// Получить все экземпляры сущности
         /// </summary>
         /// <returns>Задача, которая содержит коллекцию экземпляров сущности</returns>
-        Task<IEnumerable<TEntity>> GetAsync();
+        Task<List<TEntity>> GetAsync();
 
         /// <summary>
         /// Создать новый экземпляр сущности

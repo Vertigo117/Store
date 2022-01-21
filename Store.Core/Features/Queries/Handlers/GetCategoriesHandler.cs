@@ -14,7 +14,7 @@ namespace Store.Core.Features.Queries.Handlers
     /// <summary>
     /// Обработчик запроса на получение списка категорий
     /// </summary>
-    public class GetCategoriesHandler : IRequestHandler<GetCategoriesQuery, IEnumerable<CategoryResponse>>
+    public class GetCategoriesHandler : IRequestHandler<GetCategoriesQuery, List<CategoryResponse>>
     {
         private readonly IRepositoryWrapper repository;
         private readonly IMapper mapper;
@@ -32,10 +32,10 @@ namespace Store.Core.Features.Queries.Handlers
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<CategoryResponse>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
+        public async Task<List<CategoryResponse>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
         {
             var categories = await repository.Categories.GetAsync();
-            var response = mapper.Map<IEnumerable<CategoryResponse>>(categories);
+            var response = mapper.Map<List<CategoryResponse>>(categories);
             return response;
         }
     }

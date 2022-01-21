@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Store.Core.Features.Queries
 {
-    public class GetCategoriesQuery : IRequest<IEnumerable<CategoryResponse>>
+    public class GetCategoriesQuery : IRequest<List<CategoryResponse>>
     {
     }
 }

@@ -67,7 +67,7 @@ namespace Store.Api.Controllers
         /// <returns>Задача, которая содержит результат выполнения запроса на получение пользователей</returns>
         [HttpGet]
         [Authorize(Roles = UserRoles.Admin)]
-        [ProducesResponseType(typeof(IEnumerable<UserResponse>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<UserResponse>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]

@@ -12,7 +12,7 @@ namespace Store.Core.Features.Queries.Handlers
     /// <summary>
     /// Обработчик запроса на получение пользователей
     /// </summary>
-    public class GetUsersHandler : IRequestHandler<GetUsersQuery, IEnumerable<UserResponse>>
+    public class GetUsersHandler : IRequestHandler<GetUsersQuery, List<UserResponse>>
     {
         private readonly IRepositoryWrapper repository;
         private readonly IMapper mapper;
@@ -36,10 +36,10 @@ namespace Store.Core.Features.Queries.Handlers
         /// <param name="request">Запрос на получение пользователей</param>
         /// <param name="cancellationToken">Токен для отмены операции</param>
         /// <returns>Задача, которая содержит результат выполнения операции</returns>
-        public async Task<IEnumerable<UserResponse>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
+        public async Task<List<UserResponse>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
             var users = await repository.Users.GetAsync();
-            var response = mapper.Map<IEnumerable<UserResponse>>(users);
+            var response = mapper.Map<List<UserResponse>>(users);
             return response;
         }
     }

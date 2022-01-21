@@ -45,12 +45,12 @@ namespace Store.Data.Repositories
         }
 
         ///<inheritdoc/>
-        public async Task<IEnumerable<TEntity>> GetAsync()
+        public async Task<List<TEntity>> GetAsync()
         {
             return await context.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await context.Set<TEntity>().Where(predicate).ToListAsync();
         }

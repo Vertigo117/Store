@@ -33,7 +33,7 @@ namespace Store.Api.Controllers
         /// <returns>Результат выполнения запроса на получение всех категорий</returns>
         [HttpGet]
         [Authorize]
-        [ProducesResponseType(typeof(IEnumerable<CategoryResponse>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<CategoryResponse>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
