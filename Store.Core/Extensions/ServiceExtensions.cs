@@ -22,6 +22,7 @@ namespace Store.Core.Extensions
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.AddScoped<IUserCredentialsVerifier, UserCredentialsVerifier>();
         }
     }
 }
