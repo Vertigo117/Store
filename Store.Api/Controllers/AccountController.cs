@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Store.Api.Models;
+using Store.Api.Contracts;
 using Store.Core.Contracts;
 using Store.Core.Features.Commands;
 using Store.Core.Features.Queries;
@@ -37,7 +37,7 @@ namespace Store.Api.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ProducesResponseType(typeof(AuthenticateResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Authenticate([FromBody] LoginQuery query, CancellationToken token)
         {
             AuthenticateResponse response = await mediator.Send(query, token);
@@ -53,8 +53,8 @@ namespace Store.Api.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ProducesResponseType(typeof(RegistrationResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
         public async Task<ActionResult> Register([FromBody] RegisterCommand command, CancellationToken token)
         {
             RegistrationResponse response = await mediator.Send(command, token);
@@ -68,8 +68,8 @@ namespace Store.Api.Controllers
         [HttpGet]
         [Authorize(Roles = UserRoles.Admin)]
         [ProducesResponseType(typeof(IEnumerable<UserResponse>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<ActionResult> GetAll()
         {
@@ -89,8 +89,8 @@ namespace Store.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
         public async Task<ActionResult> Update([FromBody] UpdateUserCommand command, CancellationToken token)
         {
             await mediator.Send(command, token);
@@ -108,8 +108,8 @@ namespace Store.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
         public async Task<ActionResult> Delete([FromRoute] string id, CancellationToken token)
         {
             await mediator.Send(new DeleteUserCommand(id), token);

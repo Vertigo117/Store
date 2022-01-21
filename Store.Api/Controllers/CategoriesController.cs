@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Store.Api.Models;
+using Store.Api.Contracts;
 using Store.Core.Contracts;
 using Store.Core.Features.Queries;
 using System.Collections.Generic;
@@ -34,8 +34,8 @@ namespace Store.Api.Controllers
         [HttpGet]
         [Authorize]
         [ProducesResponseType(typeof(IEnumerable<CategoryResponse>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(Error), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<ActionResult> GetAll(CancellationToken cancellationToken)
         {

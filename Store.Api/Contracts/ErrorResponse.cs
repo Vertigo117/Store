@@ -1,9 +1,9 @@
-﻿namespace Store.Api.Models
+﻿namespace Store.Api.Contracts
 {
     /// <summary>
     /// Ошибка приложения
     /// </summary>
-    public class Error
+    public class ErrorResponse
     {
         /// <summary>
         /// Сообщение для пользователя

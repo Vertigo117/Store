@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Serilog;
-using Store.Api.Models;
+using Store.Api.Contracts;
 using Store.Core.Exceptions;
 using System;
 using System.Net;
@@ -35,7 +35,7 @@ namespace Store.Api.Middlware
             catch (Exception exception)
             {
                 await HandleExceptionAsync(exception, httpContext);
-                Log.Error(exception, $"При выполнении запроса {exception.Source} произошла ошибка: ");
+                Log.Error(exception, $"При выполнении запроса {httpContext.Request.Path} произошла ошибка: ");
             }
         }
 
@@ -55,7 +55,7 @@ namespace Store.Api.Middlware
 
         private static async Task HandleCustomException(CustomCoreException customCoreException, HttpContext httpContext)
         {
-            var error = new Error
+            var error = new ErrorResponse
             {
                 UserMessage = customCoreException.Message
             };
@@ -65,7 +65,7 @@ namespace Store.Api.Middlware
 
         private static async Task HandleDefaultException(Exception defaultException, HttpContext httpContext)
         {
-            var error = new Error
+            var error = new ErrorResponse
             {
                 UserMessage = "Произошла непредвиденная ошибка",
                 ExceptionMessage = defaultException.Message,
@@ -75,7 +75,7 @@ namespace Store.Api.Middlware
             await WriteErrorToContext(error, httpContext, statusCode);
         }
 
-        private static async Task WriteErrorToContext(Error error, HttpContext httpContext, int statusCode)
+        private static async Task WriteErrorToContext(ErrorResponse error, HttpContext httpContext, int statusCode)
         {
             string json = JsonConvert.SerializeObject(error);
             HttpResponse response = httpContext.Response;
