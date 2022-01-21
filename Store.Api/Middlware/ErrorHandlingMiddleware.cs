@@ -59,7 +59,9 @@ namespace Store.Api.Middlware
         {
             var error = new ErrorResponse
             {
-                UserMessage = customCoreException.Message
+                UserMessage = customCoreException.Message,
+                ExceptionMessage = customCoreException.Message,
+                StackTrace = customCoreException.StackTrace
             };
             var statusCode = (int)HttpStatusCode.BadRequest;
             await WriteErrorToContext(error, httpContext, statusCode);

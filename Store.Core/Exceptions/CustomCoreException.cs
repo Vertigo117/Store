@@ -8,6 +8,14 @@ namespace Store.Core.Exceptions
     public class CustomCoreException : Exception
     {
         /// <summary>
+        /// Создаёт новый экземпляр класса <seealso cref="CustomCoreException"/>
+        /// </summary>
+        public CustomCoreException()
+        {
+
+        }
+
+        /// <summary>
         /// Создаёт новый экземпляр класса <seealso cref="CustomCoreException"/> с сообщением об ошибке
         /// </summary>
         /// <param name="message">Сообщение об ошибке</param>
