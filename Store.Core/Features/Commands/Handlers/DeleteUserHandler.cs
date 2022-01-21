@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Store.Core.Exceptions;
+using Store.Data.Entities;
 using Store.Data.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,14 +16,14 @@ namespace Store.Core.Features.Commands.Handlers
     /// </summary>
     public class DeleteUserHandler : IRequestHandler<DeleteUserCommand>
     {
-        private readonly IRepositoryWrapper repository;
+        private readonly IRepository<User> repository;
 
         /// <summary>
         /// Создаёт новый экземпляр класса <seealso cref="DeleteUserHandler"/> с репозиторием
         /// </summary>
         /// <param name="repository">Репозиторий</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public DeleteUserHandler(IRepositoryWrapper repository)
+        public DeleteUserHandler(IRepository<User> repository)
         {
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
@@ -36,14 +37,14 @@ namespace Store.Core.Features.Commands.Handlers
         /// <exception cref="CustomCoreException"></exception>
         public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await repository.Users.GetAsync(request.UserId);
+            var user = await repository.GetAsync(request.UserId);
 
             if (user == null)
             {
                 throw new CustomCoreException($"Пользователя с идентификатором \"{request.UserId}\" не существует");
             }
 
-            repository.Users.Delete(user);
+            repository.Delete(user);
             await repository.SaveAsync();
             return Unit.Value;
         }

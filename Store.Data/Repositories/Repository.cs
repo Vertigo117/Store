@@ -45,7 +45,7 @@ namespace Store.Data.Repositories
         }
 
         ///<inheritdoc/>
-        public async Task<List<TEntity>> GetAsync()
+        public async Task<List<TEntity>> GetAllAsync()
         {
             return await context.Set<TEntity>().ToListAsync();
         }
@@ -59,6 +59,12 @@ namespace Store.Data.Repositories
         public void Update(TEntity entity)
         {
             context.Set<TEntity>().Update(entity);
+        }
+
+        ///<inheritdoc/>
+        public async Task SaveAsync()
+        {
+            await context.SaveChangesAsync();
         }
     }
 }

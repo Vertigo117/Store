@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Store.Core.Contracts;
+using Store.Data.Entities;
 using Store.Data.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Store.Core.Features.Queries.Handlers
     /// </summary>
     public class GetCategoriesHandler : IRequestHandler<GetCategoriesQuery, List<CategoryResponse>>
     {
-        private readonly IRepositoryWrapper repository;
+        private readonly IRepository<Category> repository;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -26,7 +27,7 @@ namespace Store.Core.Features.Queries.Handlers
         /// <param name="repository">Репозиторий</param>
         /// <param name="mapper">Автомаппер</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public GetCategoriesHandler(IRepositoryWrapper repository, IMapper mapper)
+        public GetCategoriesHandler(IRepository<Category> repository, IMapper mapper)
         {
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -34,7 +35,7 @@ namespace Store.Core.Features.Queries.Handlers
 
         public async Task<List<CategoryResponse>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
         {
-            var categories = await repository.Categories.GetAsync();
+            var categories = await repository.GetAllAsync();
             var response = mapper.Map<List<CategoryResponse>>(categories);
             return response;
         }

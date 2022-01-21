@@ -12,13 +12,6 @@ namespace Store.Data.Interfaces
     public interface IRepository<TEntity> where TEntity : class
     {
         /// <summary>
-        /// Получить все экземпляры сущности, которые удовлетворяют условиям для отбора
-        /// </summary>
-        /// <param name="predicate">Условия для отбора</param>
-        /// <returns>Задача, которая содержит экземпляр сущности, удовлетворяющий заданным условиям</returns>
-        Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate);
-
-        /// <summary>
         /// Возвращает экземпляр сущности с заданным уникальным идентификатором
         /// </summary>
         /// <param name="id">Уникальный идентификатор сущности</param>
@@ -29,7 +22,7 @@ namespace Store.Data.Interfaces
         /// Получить все экземпляры сущности
         /// </summary>
         /// <returns>Задача, которая содержит коллекцию экземпляров сущности</returns>
-        Task<List<TEntity>> GetAsync();
+        Task<List<TEntity>> GetAllAsync();
 
         /// <summary>
         /// Создать новый экземпляр сущности
@@ -48,5 +41,11 @@ namespace Store.Data.Interfaces
         /// </summary>
         /// <param name="entity">Экземпляр сущности</param>
         void Delete(TEntity entity);
+
+        /// <summary>
+        /// Сохранить изменения в базе данных
+        /// </summary>
+        /// <returns></returns>
+        Task SaveAsync();
     }
 }

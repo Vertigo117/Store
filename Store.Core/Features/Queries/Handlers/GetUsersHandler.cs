@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Store.Core.Contracts;
+using Store.Data.Entities;
 using Store.Data.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Store.Core.Features.Queries.Handlers
     /// </summary>
     public class GetUsersHandler : IRequestHandler<GetUsersQuery, List<UserResponse>>
     {
-        private readonly IRepositoryWrapper repository;
+        private readonly IRepository<User> repository;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -24,7 +25,7 @@ namespace Store.Core.Features.Queries.Handlers
         /// <param name="repository">Репозиторий бд</param>
         /// <param name="mapper">Автомаппер</param>
         /// <exception cref="ArgumentNullException"/>
-        public GetUsersHandler(IRepositoryWrapper repository, IMapper mapper)
+        public GetUsersHandler(IRepository<User> repository, IMapper mapper)
         {
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -38,7 +39,7 @@ namespace Store.Core.Features.Queries.Handlers
         /// <returns>Задача, которая содержит результат выполнения операции</returns>
         public async Task<List<UserResponse>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
-            var users = await repository.Users.GetAsync();
+            var users = await repository.GetAllAsync();
             var response = mapper.Map<List<UserResponse>>(users);
             return response;
         }

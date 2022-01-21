@@ -1,20 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Store.Core.Contracts;
 using Store.Core.Exceptions;
-using Store.Core.Models;
+using Store.Core.Interfaces;
 using Store.Data.Entities;
 using Store.Data.Interfaces;
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace Store.Core.Features.Queries.Handlers
 {
@@ -23,23 +17,30 @@ namespace Store.Core.Features.Queries.Handlers
     /// </summary>
     public class LoginHandler : IRequestHandler<LoginQuery, AuthenticateResponse>
     {
-        private readonly IRepositoryWrapper repository;
         private readonly IMapper mapper;
-        private readonly AuthSettings authSettings;
+        private readonly IRepository<User> userRepository;
+        private readonly IJwtTokenGenerator jwtTokenGenerator;
+        private readonly IUserCredentialsVerifier userCredentialsVerifier;
 
         /// <summary>
         /// Создаёт новый экземпляр класса <seealso cref="LoginHandler"/> с репозиторием бд,
-        /// автомаппером и настройками аутентификации
+        /// автомаппером, генератором jwt-токенов и верификацией пользовательских данных
         /// </summary>
-        /// <param name="repository">Репозиторий бд</param>
-        /// <param name="mapper">Автомаппер</param>
-        /// <param name="authSettings">настройки аутентификации</param>
+        /// /// <param name="mapper">Автомаппер</param>
+        /// <param name="userRepository">Репозиторий бд</param>
+        ///<param name="jwtTokenGenerator">Генератор jwt-токенов</param>
+        ///<param name="userCredentialsVerifier">Класс для верификации данных пользователя</param>
         /// <exception cref="ArgumentNullException"/>
-        public LoginHandler(IRepositoryWrapper repository, IMapper mapper, IOptions<AuthSettings> authSettings)
+        public LoginHandler(
+            IMapper mapper, 
+            IRepository<User> userRepository, 
+            IJwtTokenGenerator jwtTokenGenerator,
+            IUserCredentialsVerifier userCredentialsVerifier)
         {
-            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            this.authSettings = authSettings.Value;
+            this.userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            this.jwtTokenGenerator = jwtTokenGenerator ?? throw new ArgumentNullException(nameof(jwtTokenGenerator));
+            this.userCredentialsVerifier = userCredentialsVerifier ?? throw new ArgumentNullException(nameof(userCredentialsVerifier));
         }
 
         /// <summary>
@@ -51,8 +52,8 @@ namespace Store.Core.Features.Queries.Handlers
         /// <exception cref="CustomCoreException">Ошибка аутентификации</exception>
         public async Task<AuthenticateResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
-            User user = (await repository.Users.GetAsync(user => user.Login == request.Login))
-                .FirstOrDefault(user => BCryptNet.Verify(request.Password, user.Password));
+            var users = await userRepository.GetAllAsync();
+            User user = users.FirstOrDefault(user => VerifyRequestedCredentials(request, user));
 
             if (user == null)
             {
@@ -60,28 +61,13 @@ namespace Store.Core.Features.Queries.Handlers
             }
 
             var response = mapper.Map<AuthenticateResponse>(user);
-            response.Token = GenerateToken(user);
+            response.Token = jwtTokenGenerator.GenerateForUser(user);
             return response;
         }
 
-        private string GenerateToken(User user)
+        private bool VerifyRequestedCredentials(LoginQuery request, User user)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            byte[] key = Encoding.ASCII.GetBytes(authSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, user.Login),
-                    new Claim(ClaimTypes.Role, user.Role)
-                }),
-                Expires = DateTime.UtcNow.AddDays(authSettings.LifeTimeDays),
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature)
-            };
-            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            return userCredentialsVerifier.VerifyRequestedCredentials(request, user);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Store.Core.Exceptions;
+using Store.Data.Entities;
 using Store.Data.Interfaces;
 using System;
 using System.Threading;
@@ -13,7 +14,7 @@ namespace Store.Core.Features.Commands.Handlers
     /// </summary>
     public class UpdateUserHandler : IRequestHandler<UpdateUserCommand>
     {
-        private readonly IRepositoryWrapper repository;
+        private readonly IRepository<User> repository;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -23,7 +24,7 @@ namespace Store.Core.Features.Commands.Handlers
         /// <param name="repository">Репозиторий</param>
         /// <param name="mapper">Автомаппер</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public UpdateUserHandler(IRepositoryWrapper repository, IMapper mapper)
+        public UpdateUserHandler(IRepository<User> repository, IMapper mapper)
         {
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -38,7 +39,7 @@ namespace Store.Core.Features.Commands.Handlers
         /// <exception cref="CustomCoreException">Кастомное исключение</exception>
         public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await repository.Users.GetAsync(request.Id);
+            var user = await repository.GetAsync(request.Id);
 
             if (user == null)
             {
@@ -46,7 +47,7 @@ namespace Store.Core.Features.Commands.Handlers
             }
 
             mapper.Map(request, user);
-            repository.Users.Update(user);
+            repository.Update(user);
             await repository.SaveAsync();
             return Unit.Value;
         }

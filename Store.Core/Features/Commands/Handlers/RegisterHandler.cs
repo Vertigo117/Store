@@ -18,7 +18,7 @@ namespace Store.Core.Features.Commands.Handlers
     /// </summary>
     internal class RegisterHandler : IRequestHandler<RegisterCommand, RegistrationResponse>
     {
-        private readonly IRepositoryWrapper repository;
+        private readonly IRepository<User> repository;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Store.Core.Features.Commands.Handlers
         /// <param name="repository">Репозиторий</param>
         /// <param name="mapper">Автомаппер</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public RegisterHandler(IRepositoryWrapper repository, IMapper mapper)
+        public RegisterHandler(IRepository<User> repository, IMapper mapper)
         {
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -43,7 +43,7 @@ namespace Store.Core.Features.Commands.Handlers
         /// <exception cref="CustomCoreException">Ошибка регистрации</exception>
         public async Task<RegistrationResponse> Handle(RegisterCommand command, CancellationToken cancellationToken)
         {
-            bool loginExists = (await repository.Users.GetAsync()).Any(user => user.Login == command.Login);
+            bool loginExists = (await repository.GetAllAsync()).Any(user => user.Login == command.Login);
 
             if (loginExists)
             {
@@ -54,7 +54,7 @@ namespace Store.Core.Features.Commands.Handlers
 
             var user = mapper.Map<User>(command);
             user.Role = UserRoles.User;
-            repository.Users.Create(user);
+            repository.Create(user);
             await repository.SaveAsync();
 
             var response = mapper.Map<RegistrationResponse>(user);
