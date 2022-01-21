@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Store.Core.Contracts;
-using Store.Core.ErrorHandling.Exceptions;
+using Store.Core.Exceptions;
 using Store.Core.Models;
 using Store.Data.Entities;
 using Store.Data.Interfaces;

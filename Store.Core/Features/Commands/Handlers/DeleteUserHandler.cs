@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Store.Core.ErrorHandling.Exceptions;
+using Store.Core.Exceptions;
 using Store.Data.Interfaces;
 using System;
 using System.Collections.Generic;

@@ -20,10 +20,11 @@ namespace Store.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCustomAuthorization(Configuration);
             services.AddDatabase(Configuration);
-            services.AddCoreServices(Configuration);
+            services.AddCoreServices();
             services.AddControllers();
-            services.ConfigureSwagger();
+            services.AddSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

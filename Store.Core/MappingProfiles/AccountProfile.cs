@@ -3,7 +3,7 @@ using Store.Core.Contracts;
 using Store.Core.Features.Commands;
 using Store.Data.Entities;
 
-namespace Store.Core.Mapping
+namespace Store.Core.MappingProfiles
 {
     /// <summary>
     /// Настройки для маппинга AutoMapper

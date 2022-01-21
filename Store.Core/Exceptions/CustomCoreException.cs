@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Store.Core.ErrorHandling.Exceptions
+namespace Store.Core.Exceptions
 {
     /// <summary>
     /// Кастомная ошибка приложения

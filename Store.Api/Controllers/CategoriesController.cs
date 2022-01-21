@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.Api.Models;
 using Store.Core.Contracts;
-using Store.Core.ErrorHandling;
 using Store.Core.Features.Queries;
 using System.Collections.Generic;
 using System.Net;

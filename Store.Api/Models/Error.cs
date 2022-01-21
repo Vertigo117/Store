@@ -1,4 +1,4 @@
-﻿namespace Store.Core.ErrorHandling
+﻿namespace Store.Api.Models
 {
     /// <summary>
     /// Ошибка приложения

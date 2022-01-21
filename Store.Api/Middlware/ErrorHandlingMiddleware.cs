@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Serilog;
-using Store.Core.ErrorHandling;
-using Store.Core.ErrorHandling.Exceptions;
+using Store.Api.Models;
+using Store.Core.Exceptions;
 using System;
 using System.Net;
 using System.Threading.Tasks;

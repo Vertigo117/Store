@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Store.Api.Models;
 using Store.Core.Contracts;
-using Store.Core.ErrorHandling;
 using Store.Core.Features.Commands;
 using Store.Core.Features.Queries;
 using Store.Core.Models;

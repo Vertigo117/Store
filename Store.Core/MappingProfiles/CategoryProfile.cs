@@ -2,7 +2,7 @@
 using Store.Core.Contracts;
 using Store.Data.Entities;
 
-namespace Store.Core.Mapping
+namespace Store.Core.MappingProfiles
 {
     /// <summary>
     /// Настройки маппинга для категории товаров
