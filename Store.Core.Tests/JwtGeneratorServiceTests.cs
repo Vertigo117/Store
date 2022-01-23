@@ -34,7 +34,18 @@ namespace Store.Core.Tests
         }
 
         [Test]
-        public void CheckJwtTokenHasThreeParts()
+        public void GenerateForUser_NullArgument_ExceptionThrown()
+        {
+            //Arrange
+            User user = null;
+            Type expectedException = typeof(NullReferenceException);
+
+            //Assert
+            Assert.Throws(expectedException, () => jwtGenerator.GenerateForUser(user));
+        }
+
+        [Test]
+        public void GenerateForUser_GenerateJwt_JwtHasThreeParts()
         {
             //Arrange
             int expectedCount = 3;
@@ -49,7 +60,7 @@ namespace Store.Core.Tests
         }
 
         [Test]
-        public void CheckJwtTokenHeader()
+        public void GenerateForUser_GenerateJwt_JwtHeaderIsValid()
         {
             //Arrange
             User user = CreateUser();
@@ -65,7 +76,7 @@ namespace Store.Core.Tests
         }
 
         [Test]
-        public void CheckJwtTokenPayload()
+        public void GenerateForUser_GenerateJwt_JwtPayloadIsValid()
         {
             //Arrange
             var user = CreateUser();
@@ -80,7 +91,7 @@ namespace Store.Core.Tests
         }
 
         [Test]
-        public void CheckJwtTokenSignature()
+        public void GenerateForUser_GenerateJwt_JwtSignatureIsValid()
         {
             //Arrange
             var user = CreateUser();
