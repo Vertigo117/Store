@@ -19,8 +19,8 @@ namespace Store.Core.Features.Queries.Handlers
     {
         private readonly IMapper mapper;
         private readonly IRepository<User> userRepository;
-        private readonly IJwtTokenGenerator jwtTokenGenerator;
-        private readonly IUserCredentialsVerifier userCredentialsVerifier;
+        private readonly IJwtGeneratorService jwtGenerator;
+        private readonly IUserCredentialsService userCredentialsVerifier;
 
         /// <summary>
         /// Создаёт новый экземпляр класса <seealso cref="LoginHandler"/> с репозиторием бд,
@@ -28,18 +28,18 @@ namespace Store.Core.Features.Queries.Handlers
         /// </summary>
         /// /// <param name="mapper">Автомаппер</param>
         /// <param name="userRepository">Репозиторий бд</param>
-        ///<param name="jwtTokenGenerator">Генератор jwt-токенов</param>
+        ///<param name="jwtGenerator">Генератор jwt-токенов</param>
         ///<param name="userCredentialsVerifier">Класс для верификации данных пользователя</param>
         /// <exception cref="ArgumentNullException"/>
         public LoginHandler(
             IMapper mapper, 
             IRepository<User> userRepository, 
-            IJwtTokenGenerator jwtTokenGenerator,
-            IUserCredentialsVerifier userCredentialsVerifier)
+            IJwtGeneratorService jwtGenerator,
+            IUserCredentialsService userCredentialsVerifier)
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-            this.jwtTokenGenerator = jwtTokenGenerator ?? throw new ArgumentNullException(nameof(jwtTokenGenerator));
+            this.jwtGenerator = jwtGenerator ?? throw new ArgumentNullException(nameof(jwtGenerator));
             this.userCredentialsVerifier = userCredentialsVerifier ?? throw new ArgumentNullException(nameof(userCredentialsVerifier));
         }
 
@@ -61,7 +61,7 @@ namespace Store.Core.Features.Queries.Handlers
             }
 
             var response = mapper.Map<AuthenticateResponse>(user);
-            response.Token = jwtTokenGenerator.GenerateForUser(user);
+            response.Token = jwtGenerator.GenerateForUser(user);
             return response;
         }
 

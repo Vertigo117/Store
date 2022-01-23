@@ -13,16 +13,16 @@ namespace Store.Core.Services
     /// <summary>
     /// Генератор jwt-токенов
     /// </summary>
-    public class JwtTokenGenerator : IJwtTokenGenerator
+    public class JwtGeneratorService : IJwtGeneratorService
     {
         private readonly AuthSettings authSettings;
 
         /// <summary>
-        /// Создаёт новый экземпляр класса <seealso cref="JwtTokenGenerator"/>
+        /// Создаёт новый экземпляр класса <seealso cref="JwtGeneratorService"/>
         /// с настройками авторизации
         /// </summary>
         /// <param name="authSettings">Настройки авторизации</param>
-        public JwtTokenGenerator(IOptions<AuthSettings> authSettings)
+        public JwtGeneratorService(IOptions<AuthSettings> authSettings)
         {
             this.authSettings = authSettings.Value;
         }

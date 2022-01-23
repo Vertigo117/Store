@@ -5,7 +5,7 @@ namespace Store.Core.Interfaces
     /// <summary>
     /// Интерфейс для генерации токенов
     /// </summary>
-    public interface IJwtTokenGenerator
+    public interface IJwtGeneratorService
     {
         /// <summary>
         /// Сгенерировать jwt-токен для пользователя

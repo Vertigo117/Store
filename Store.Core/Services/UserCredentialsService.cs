@@ -8,7 +8,7 @@ namespace Store.Core.Services
     /// <summary>
     /// Класс для проверки данных пользователя на валидность
     /// </summary>
-    public class UserCredentialsVerifier : IUserCredentialsVerifier
+    public class UserCredentialsService : IUserCredentialsService
     {
         ///<inheritdoc/>
         public bool VerifyRequestedCredentials(LoginQuery request, User user)

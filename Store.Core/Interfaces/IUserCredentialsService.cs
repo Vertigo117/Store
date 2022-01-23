@@ -6,7 +6,7 @@ namespace Store.Core.Interfaces
     /// <summary>
     /// Интерфейс для верификации пользовательских данных
     /// </summary>
-    public interface IUserCredentialsVerifier
+    public interface IUserCredentialsService
     {
         /// <summary>
         /// Проверить логин пользователя и пароль
