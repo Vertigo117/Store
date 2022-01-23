@@ -40,8 +40,11 @@ namespace Store.Core.Tests
             User user = null;
             Type expectedException = typeof(NullReferenceException);
 
+            //Act
+            TestDelegate action = () => jwtGenerator.GenerateForUser(user);
+
             //Assert
-            Assert.Throws(expectedException, () => jwtGenerator.GenerateForUser(user));
+            Assert.Throws(expectedException, action);
         }
 
         [Test]
