@@ -48,6 +48,19 @@ namespace Store.Core.Tests
         }
 
         [Test]
+        public void GenerateForUser_JwtGenerated_StringReturned()
+        {
+            //Arrange
+            User user = CreateUser();
+
+            //Act
+            string jwt = jwtGenerator.GenerateForUser(user);
+
+            //Assert
+            Assert.IsInstanceOf<string>(jwt);
+        }
+
+        [Test]
         public void GenerateForUser_JwtGenerated_JwtHasThreeParts()
         {
             //Arrange
