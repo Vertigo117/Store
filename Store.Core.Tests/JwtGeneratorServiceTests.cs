@@ -34,7 +34,7 @@ namespace Store.Core.Tests
         }
 
         [Test]
-        public void GenerateForUser_NullArgument_ExceptionThrown()
+        public void GenerateForUser_NullArgumentPassed_ExceptionThrown()
         {
             //Arrange
             User user = null;
@@ -48,7 +48,7 @@ namespace Store.Core.Tests
         }
 
         [Test]
-        public void GenerateForUser_GenerateJwt_JwtHasThreeParts()
+        public void GenerateForUser_JwtGenerated_JwtHasThreeParts()
         {
             //Arrange
             int expectedCount = 3;
@@ -63,7 +63,7 @@ namespace Store.Core.Tests
         }
 
         [Test]
-        public void GenerateForUser_GenerateJwt_JwtHeaderIsValid()
+        public void GenerateForUser_JwtGenerated_JwtHeaderIsValid()
         {
             //Arrange
             User user = CreateUser();
@@ -79,7 +79,7 @@ namespace Store.Core.Tests
         }
 
         [Test]
-        public void GenerateForUser_GenerateJwt_JwtPayloadIsValid()
+        public void GenerateForUser_JwtGenerated_JwtPayloadIsValid()
         {
             //Arrange
             var user = CreateUser();
@@ -94,7 +94,7 @@ namespace Store.Core.Tests
         }
 
         [Test]
-        public void GenerateForUser_GenerateJwt_JwtSignatureIsValid()
+        public void GenerateForUser_JwtGenerated_JwtSignatureIsValid()
         {
             //Arrange
             var user = CreateUser();
